@@ -51,7 +51,7 @@ table.features <- function(id){
 }
 
 ids <- sub('^rows/', '', sub('.csv$', '', list.files('rows')))
-for (id in ids) {
-  print(table.features(id))
-  break
+write.table(table.features(ids[1]), file = "table.features.csv", append = F)
+for (id in ids[-1]) {
+  write.table(table.features(id), file = "table.features.csv", append = T)
 }
