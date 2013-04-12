@@ -2,26 +2,27 @@
 library(psych)
 
 table.features <- function(id){
-  table <- read.csv(paste('rows/', id, '.csv', sep = ''), stringsAsFactors = F)
-  header <- paste(colnames(table), collapse = '')
+  table.df <- read.csv(paste('rows/', id, '.csv', sep = ''), stringsAsFactors = F)
+  header <- paste(colnames(table.df), collapse = '')
 
   # Year column
-  if ('year' %in% colnames(table)) {
-    year <- table$year
-  } else if ('Year' %in% colnames(table)) {
-    year <- table$Year
+  if ('year' %in% colnames(table.df)) {
+    year <- table.df$year
+  } else if ('Year' %in% colnames(table.df)) {
+    year <- table.df$Year
   } else {
     year <- NA
   }
 
   # Column types
-  date.cols <- grep('date', tolower(colnames(table)))
+  date.cols <- grep('date', tolower(colnames(table.df)))
   if (0 == length(date.cols)) {
-    .table <- table
+    .table.df <- table.df
   } else {
-    .table <- table[-date.cols]
+    .table.df <- table.df[-date.cols]
   }
-  col.types <- table(sapply(.table, typeof))
+  .t <<- .table.df
+  col.types <- table(sapply(.table.df, typeof))
   if (!'character' %in% col.types) {
     col.types[['character']] <- 0
   }
@@ -32,8 +33,8 @@ table.features <- function(id){
 
   features <- data.frame(t(as.matrix(c(
     id = id,
-    nrow = nrow(table),
-    ncol = ncol(table),
+    nrow = nrow(table.df),
+    ncol = ncol(table.df),
     header.nchar = nchar(header),
     header.nlowercase = nchar(gsub('[^a-z]', '', header)),
     header.nuppercase = nchar(gsub('[^A-Z]', '', header)),
