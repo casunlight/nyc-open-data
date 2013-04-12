@@ -22,7 +22,13 @@ table.features <- function(id){
     .table.df <- table.df[-date.cols]
   }
   .t <<- .table.df
-  col.types <- table(sapply(.table.df, typeof))
+  
+  if (ncol(.table.df) == 0) {
+    col.types <- list()
+  } else {
+    col.types <- table(sapply(.table.df, typeof))
+  }
+
   if (!'character' %in% col.types) {
     col.types[['character']] <- 0
   }
@@ -31,7 +37,7 @@ table.features <- function(id){
   }
   col.types[['date']] <- length(date.cols)
 
-  features <- data.frame(t(as.matrix(c(
+  features <- data.frame(
     id = id,
     nrow = nrow(table.df),
     ncol = ncol(table.df),
@@ -48,7 +54,7 @@ table.features <- function(id){
     ncol.character = col.types[['character']],
     ncol.integer = col.types[['integer']],
     ncol.date = col.types[['date']]
-  ))))
+  )
 }
 
 ids <- sub('^rows/', '', sub('.csv$', '', list.files('rows')))
