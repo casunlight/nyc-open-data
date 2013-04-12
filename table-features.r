@@ -1,7 +1,5 @@
 #!/usr/bin/env Rscript
 
-prop.cap
-
 table.features <- function(id){
   table <- read.csv(paste(id, '.csv', sep = ''))
   header <- paste(colnames(table), collapse = '')
@@ -11,6 +9,8 @@ table.features <- function(id){
     ncol = ncol(table),
     header.nchar = length(header),
     header.nlowercase = length(gsub('[^a-z]', '', header)),
-    header.nlowercase = length(gsub('[^A-Z]', '', header)),
+    header.nlowercase = length(gsub('[^A-Z]', '', header))
   )
 }
+
+table.features('zpd4-gad8')
