@@ -21,9 +21,13 @@ table.features <- function(id){
   } else {
     .table <- table[-date.cols]
   }
-  print(colnames(table))
-  print(.table[1,])
   col.types <- table(sapply(.table, typeof))
+  if (!'character' %in% col.types) {
+    col.types[['character']] <- 0
+  }
+  if (!'integer' %in% col.types) {
+    col.types[['integer']] <- 0
+  }
   col.types[['date']] <- length(date.cols)
 
   features <- c(
@@ -46,4 +50,8 @@ table.features <- function(id){
   )
 }
 
-t(t(table.features('zpd4-gad8')))
+ids <- sub('^rows/', '', sub('.csv$', '', list.files('rows')))
+for (id in ids) {
+  print(table.features(id))
+  break
+}
