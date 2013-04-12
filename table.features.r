@@ -30,7 +30,7 @@ table.features <- function(id){
   }
   col.types[['date']] <- length(date.cols)
 
-  features <- c(
+  features <- data.frame(t(as.matrix(c(
     id = id,
     nrow = nrow(table),
     ncol = ncol(table),
@@ -47,11 +47,11 @@ table.features <- function(id){
     ncol.character = col.types[['character']],
     ncol.integer = col.types[['integer']],
     ncol.date = col.types[['date']]
-  )
+  ))))
 }
 
 ids <- sub('^rows/', '', sub('.csv$', '', list.files('rows')))
-write.table(table.features(ids[1]), file = "table.features.csv", append = F)
+write.table(table.features(ids[1]), file = "table.features.csv", append = F, row.names = F)
 for (id in ids[-1]) {
-  write.table(table.features(id), file = "table.features.csv", append = T)
+  write.table(table.features(id), file = "table.features.csv", append = T, col.names = F, row.names = F)
 }
