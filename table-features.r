@@ -15,7 +15,16 @@ table.features <- function(id){
   }
 
   # Column types
-  col.types <- table(sapply(table, typeof))
+  date.cols <- grep('date', tolower(colnames(table)))
+  if (0 == length(date.cols)) {
+    .table <- table
+  } else {
+    .table <- table[-date.cols]
+  }
+  print(colnames(table))
+  print(.table[1,])
+  col.types <- table(sapply(.table, typeof))
+  col.types[['date']] <- length(date.cols)
 
   features <- c(
     id = id,
@@ -23,7 +32,7 @@ table.features <- function(id){
     ncol = ncol(table),
     header.nchar = nchar(header),
     header.nlowercase = nchar(gsub('[^a-z]', '', header)),
-    header.nlowercase = nchar(gsub('[^A-Z]', '', header)),
+    header.nuppercase = nchar(gsub('[^A-Z]', '', header)),
     year.mean = mean(year),
     year.median = median(year),
     year.max = max(year),
@@ -32,7 +41,8 @@ table.features <- function(id){
     year.skew = skew(year),
     year.kurtosis = kurtosi(year),
     ncol.character = col.types[['character']],
-    ncol.integer = col.types[['integer']]
+    ncol.integer = col.types[['integer']],
+    ncol.date = col.types[['date']]
   )
 }
 
